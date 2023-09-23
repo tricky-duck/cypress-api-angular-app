@@ -1,0 +1,40 @@
+{
+    "articles": [
+        {
+            "slug": "Article1-1850",
+            "title": "article 1",
+            "description": "This is description",
+            "body": "This is body",
+            "tagList": [],
+            "createdAt": "2023-09-23T13:56:45.290Z",
+            "updatedAt": "2023-09-23T13:56:45.290Z",
+            "favorited": false,
+            "favoritesCount": 5,
+            "author": {
+                "username": "CyTestUser",
+                "bio": "2222",
+                "image": "https://i.stack.imgur.com/34AD2.jpg",
+                "following": false
+            }
+        },
+        {
+            "slug": "article2-1850",
+            "title": "article 2",
+            "description": "This is a DESCRIPTION",
+            "body": "This is my first API test in CYPRESS",
+            "tagList": [],
+            "createdAt": "2023-09-23T09:02:30.727Z",
+            "updatedAt": "2023-09-23T09:02:30.727Z",
+            "favorited": false,
+            "favoritesCount": 1,
+            "author": {
+                "username": "CyTestUser",
+                "bio": "2222",
+                "image": "https://i.stack.imgur.com/34AD2.jpg",
+                "following": false
+            }
+        }
+    ],
+
+    "articlesCount": 2
+}
