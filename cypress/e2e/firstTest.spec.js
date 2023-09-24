@@ -32,7 +32,7 @@ describe('Tests with backend', ()=>{
         })
     })
 
-    it.only('intercept and modify request and response', () => {
+    it('intercept and modify request and response', () => {
         // intercept should be before the action you want to verify
         // intecept the call and assert the request and response of your test
         // cy.intercept('POST', '**/articles/', (req) => {
@@ -84,8 +84,51 @@ describe('Tests with backend', ()=>{
             cy.intercept('POST', 'https://api.realworld.io/api/articles/'+articleLink+'/favorite', file)
         })
         cy.get('app-article-list button').eq(0).click().should('contain', '6')
-})
-    // it('next test', () => {
-    // })
-})
+    })
 
+    it.only('log in and create article via API, delete it via UI', () => {
+
+        // use postman to verify details needed for the calls
+        const userCreds = {
+            "user":{
+                "email":"artem.bondar16@gmail.com",
+                "password":"CypressTest1"
+            }
+        }
+
+        const articleDetails = {
+            "article":{
+                "title":"art",
+                "description":"what",
+                "body":"descr",
+                "tagList":[]}
+            }
+
+        cy.request('POST', 'https://api.realworld.io/api/users/login', userCreds)
+        .its('body').then(body => {
+            const token = body.user.token
+            cy.log(token)
+        
+            cy.request({
+                url: 'https://api.realworld.io/api/articles/',
+                headers: {'Authorization': 'Token '+ token},
+                method: 'POST',
+                body: articleDetails
+            }).then(response => {
+                expect(response.status).to.equal(201)
+            })
+            cy.contains('Global Feed').click()
+            cy.get('app-article-preview').first().click()
+            cy.get('.article-actions').contains('Delete Article').click()
+
+            cy.request({
+                url: 'https://api.realworld.io/api/articles?limit=10&offset=0',
+                headers: {'Authorization': 'Token '+ token},
+                method: 'GET',
+                body: articleDetails
+        }).its('body').then(body => {
+            expect(body.articles[0].title).not.to.equal(articleDetails.article.title)
+        })
+    })
+})
+})
