@@ -5,7 +5,7 @@ describe('Tests with backend', ()=>{
 
     beforeEach('login to the app', ()=>{
         // intercept get call and use tags.json as a body of the response
-        cy.intercept('GET', 'https://api.realworld.io/api/tags', {fixture:'tags.json'})
+        cy.intercept({method:'GET', path:'tags'}, {fixture:'tags.json'})
         cy.loginToApp()
     })
 
@@ -32,6 +32,35 @@ describe('Tests with backend', ()=>{
         })
     })
 
+    it.only('intercept and modify request and response', () => {
+        // intercept should be before the action you want to verify
+        // intecept the call and assert the request and response of your test
+        // cy.intercept('POST', '**/articles/', (req) => {
+        //     req.body.article.description = "this is modified description"
+        // }).as('postArticle')
+
+        cy.intercept('POST', '**/articles/', (req) => {
+            req.reply(res => {
+                expect(res.body.article.description).to.equal('it\'s about something')
+                res.body.article.description = "it\'s about something 2"
+            })
+
+        }).as('postArticle')
+
+        cy.get('a[routerlink="/editor"]').click()
+        cy.get('[formcontrolname="title"]').type('This is Annas article')
+        cy.get('[formcontrolname="description"]').type('it\'s about something')
+        cy.get('[formcontrolname="body"]').type('article body')
+        cy.contains(' Publish Article ').click()
+
+        cy.wait('@postArticle').then(xhr => {
+            console.log(xhr)
+            expect(xhr.response.statusCode).to.be.equal(201)
+            expect(xhr.request.body.article.body).to.be.equal('article body')
+            expect(xhr.response.body.article.description).to.equal('it\'s about something 2')   
+        })
+    })
+
     it('verify tags in the list with mock', ()  => {
         cy.log('we logged in')
         cy.get('.tag-list').should('contain', 'cypress')
@@ -39,7 +68,7 @@ describe('Tests with backend', ()=>{
         .and('contain', 'superlongtagtoseeifitbreakstheui')
     })
 
-    it.only('change data in response and verify the likes change upon click', () => {
+    it('change data in response and verify the likes change upon click', () => {
         cy.intercept('GET', 'https://api.realworld.io/api/articles*', {fixture:'globalFeedArticles.json'})
         cy.log('check articles shown')
 
@@ -56,5 +85,7 @@ describe('Tests with backend', ()=>{
         })
         cy.get('app-article-list button').eq(0).click().should('contain', '6')
 })
+    // it('next test', () => {
+    // })
 })
 
