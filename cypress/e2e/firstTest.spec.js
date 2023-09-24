@@ -48,13 +48,13 @@ describe('Tests with backend', ()=>{
         }).as('postArticle')
 
         cy.get('a[routerlink="/editor"]').click()
-        cy.get('[formcontrolname="title"]').type('This is Annas article')
+        cy.get('[formcontrolname="title"]').type('This is another article')
         cy.get('[formcontrolname="description"]').type('it\'s about something')
         cy.get('[formcontrolname="body"]').type('article body')
-        cy.contains(' Publish Article ').click()
+        cy.contains('Publish Article').click()
 
         cy.wait('@postArticle').then(xhr => {
-            console.log(xhr)
+            cy.log(xhr)
             expect(xhr.response.statusCode).to.be.equal(201)
             expect(xhr.request.body.article.body).to.be.equal('article body')
             expect(xhr.response.body.article.description).to.equal('it\'s about something 2')   
@@ -86,16 +86,7 @@ describe('Tests with backend', ()=>{
         cy.get('app-article-list button').eq(0).click().should('contain', '6')
     })
 
-    it.only('log in and create article via API, delete it via UI', () => {
-
-        // use postman to verify details needed for the calls
-        const userCreds = {
-            "user":{
-                "email":"artem.bondar16@gmail.com",
-                "password":"CypressTest1"
-            }
-        }
-
+    it('log in and create article via API, delete it via UI', () => {
         const articleDetails = {
             "article":{
                 "title":"art",
@@ -104,11 +95,8 @@ describe('Tests with backend', ()=>{
                 "tagList":[]}
             }
 
-        cy.request('POST', 'https://api.realworld.io/api/users/login', userCreds)
-        .its('body').then(body => {
-            const token = body.user.token
-            cy.log(token)
-        
+        cy.get('@token').then(token => {
+
             cy.request({
                 url: 'https://api.realworld.io/api/articles/',
                 headers: {'Authorization': 'Token '+ token},

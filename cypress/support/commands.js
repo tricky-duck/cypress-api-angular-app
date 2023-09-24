@@ -38,9 +38,20 @@
 
 
 Cypress.Commands.add('loginToApp', () => {
-    cy.visit('/login')
-    cy.get('[placeholder="Email"]').type('artem.bondar16@gmail.com')
-    cy.get('[placeholder="Password"]').type('CypressTest1')
-    cy.get('form').submit()
-
+    const userCreds = {
+        "user":{
+            "email":"artem.bondar16@gmail.com",
+            "password":"CypressTest1"
+        }}
+    
+    cy.request('POST', 'https://api.realworld.io/api/users/login', userCreds)
+        .its('body').then(body => {
+            const token = body.user.token
+            cy.wrap(token).as('token')
+    cy.visit('/', {
+        onBeforeLoad(win){
+            win.localStorage.setItem('jwtToken', token)
+        }
+    })
+})
 })
