@@ -16,7 +16,7 @@ describe('Tests with backend', ()=>{
     it('create an article with intercept and verify response', () => {
         // intercept should be before the action you want to verify
         // intecept the call and assert the request and response of your test
-        cy.intercept('POST', 'https://api.realworld.io/api/articles/').as('postArticle')
+        cy.intercept('POST', Cypress.env('apiUrl')+'/api/articles/').as('postArticle')
 
         cy.get('a[routerlink="/editor"]').click()
         cy.get('[formcontrolname="title"]').type('This is Annas article')
@@ -69,7 +69,7 @@ describe('Tests with backend', ()=>{
     })
 
     it('change data in response and verify the likes change upon click', () => {
-        cy.intercept('GET', 'https://api.realworld.io/api/articles*', {fixture:'globalFeedArticles.json'})
+        cy.intercept('GET', Cypress.env('apiUrl')+'/api/articles*', {fixture:'globalFeedArticles.json'})
         cy.log('check articles shown')
 
         cy.contains('Global Feed').click
@@ -81,7 +81,7 @@ describe('Tests with backend', ()=>{
         cy.fixture('globalFeedArticles').then(file => {
             const articleLink = file.articles[0].slug
             file.articles[0].favouritesCount = 6
-            cy.intercept('POST', 'https://api.realworld.io/api/articles/'+articleLink+'/favorite', file)
+            cy.intercept('POST', Cypress.env('apiUrl')+'/api/articles/'+articleLink+'/favorite', file)
         })
         cy.get('app-article-list button').eq(0).click().should('contain', '6')
     })
@@ -98,7 +98,7 @@ describe('Tests with backend', ()=>{
         cy.get('@token').then(token => {
 
             cy.request({
-                url: 'https://api.realworld.io/api/articles/',
+                url: Cypress.env('apiUrl')+'/api/articles/',
                 headers: {'Authorization': 'Token '+ token},
                 method: 'POST',
                 body: articleDetails
@@ -110,13 +110,13 @@ describe('Tests with backend', ()=>{
             cy.get('.article-actions').contains('Delete Article').click()
 
             cy.request({
-                url: 'https://api.realworld.io/api/articles?limit=10&offset=0',
+                url: Cypress.env('apiUrl')+'/api/articles?limit=10&offset=0',
                 headers: {'Authorization': 'Token '+ token},
                 method: 'GET',
                 body: articleDetails
         }).its('body').then(body => {
             expect(body.articles[0].title).not.to.equal(articleDetails.article.title)
         })
-    })
+    }) 
 })
 })
