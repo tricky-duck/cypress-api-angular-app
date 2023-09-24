@@ -11,6 +11,11 @@ export default defineConfig({
     password: 'CypressTest1',
     apiUrl: 'https://api.realworld.io'
   },
+  //retries: 1, //number of retries if failed in the open mode
+  retries:{ // global for all tests, https://docs.cypress.io/guides/guides/test-retries
+    runMode:2, // when use ci/cd or without UI it will retry failed 2 times
+    openMode: 0 // no retries in the open mode
+  },
 
   e2e: {
     baseUrl: 'http://localhost:4200',

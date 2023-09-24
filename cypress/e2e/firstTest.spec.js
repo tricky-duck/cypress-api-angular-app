@@ -13,7 +13,7 @@ describe('Tests with backend', ()=>{
         cy.log('you re logged in')        
     })
 
-    it('create an article with intercept and verify response', () => {
+    it('create an article with intercept and verify response',{retries: 2},() => {
         // intercept should be before the action you want to verify
         // intecept the call and assert the request and response of your test
         cy.intercept('POST', Cypress.env('apiUrl')+'/api/articles/').as('postArticle')
