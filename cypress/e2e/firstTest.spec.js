@@ -13,7 +13,7 @@ describe('Tests with backend', ()=>{
         cy.log('you re logged in')        
     })
 
-    it('create an article with intercept and verify response',{retries: 2},() => {
+    it('create an article with intercept and verify response',{retries: 0},() => {
         // intercept should be before the action you want to verify
         // intecept the call and assert the request and response of your test
         cy.intercept('POST', Cypress.env('apiUrl')+'/api/articles/').as('postArticle')
@@ -30,6 +30,7 @@ describe('Tests with backend', ()=>{
             expect(xhr.request.body.article.body).to.be.equal('article body')
             expect(xhr.response.body.article.description).to.equal('it\'s about something')   
         })
+        cy.get('.article-actions').contains('Delete Article').click()
     })
 
     it('intercept and modify request and response', () => {
@@ -59,6 +60,7 @@ describe('Tests with backend', ()=>{
             expect(xhr.request.body.article.body).to.be.equal('article body')
             expect(xhr.response.body.article.description).to.equal('it\'s about something 2')   
         })
+        cy.get('.article-actions').contains('Delete Article').click()
     })
 
     it('verify tags in the list with mock', ()  => {

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="13.164" tests="6" failures="0">
+  <testsuite name="Root Suite" timestamp="2023-09-26T17:57:40" tests="0" file="cypress/e2e/firstTest.spec.js" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Tests with backend" timestamp="2023-09-26T17:57:40" tests="6" time="13.132" failures="0">
+    <testcase name="Tests with backend test to login" time="1.335" classname="test to login">
+    </testcase>
+    <testcase name="Tests with backend create an article with intercept and verify response" time="3.215" classname="create an article with intercept and verify response">
+    </testcase>
+    <testcase name="Tests with backend intercept and modify request and response" time="3.180" classname="intercept and modify request and response">
+    </testcase>
+    <testcase name="Tests with backend verify tags in the list with mock" time="1.161" classname="verify tags in the list with mock">
+    </testcase>
+    <testcase name="Tests with backend change data in response and verify the likes change upon click" time="0.982" classname="change data in response and verify the likes change upon click">
+    </testcase>
+    <testcase name="Tests with backend log in and create article via API, delete it via UI" time="3.199" classname="log in and create article via API, delete it via UI">
+    </testcase>
+  </testsuite>
+</testsuites>

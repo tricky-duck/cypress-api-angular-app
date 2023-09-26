@@ -1,10 +1,13 @@
-import { defineConfig } from "cypress";
+const { defineConfig } = require('cypress')
 
-export default defineConfig({
+module.exports = defineConfig({
   viewportHeight: 1080,
   viewportWidth: 1920,
   video: false,
-
+  reporter: 'cypress-multi-reporters',
+  reporterOptions: {
+    configFile: 'reporter-config.json'},
+    
   // to hide log in data define process env variables
   env: {
     username: 'artem.bondar16@gmail.com', // data from cypress.env.json takes prio over this file. add credts to the local config.

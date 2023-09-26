@@ -1,0 +1,1 @@
+To create report see Cypress Reporters page 

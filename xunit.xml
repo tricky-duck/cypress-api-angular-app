@@ -1,0 +1,8 @@
+<testsuite name="Mocha Tests" tests="6" failures="0" errors="0" skipped="0" timestamp="Tue, 26 Sep 2023 16:32:46 GMT" time="16.135">
+<testcase classname="Tests with backend" name="test to login" time="1.814"/>
+<testcase classname="Tests with backend" name="create an article with intercept and verify response" time="4.127"/>
+<testcase classname="Tests with backend" name="intercept and modify request and response" time="4.063"/>
+<testcase classname="Tests with backend" name="verify tags in the list with mock" time="1.102"/>
+<testcase classname="Tests with backend" name="change data in response and verify the likes change upon click" time="1.14"/>
+<testcase classname="Tests with backend" name="log in and create article via API, delete it via UI" time="3.767"/>
+</testsuite>
